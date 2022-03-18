@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./yt_styles/myStyles.css">
+    <title>Document</title>
+</head>
+<body>
+    <div id="mainbox">
+        <form>
+            <h1>Creat Account</h1>
+            <label for="">Name</label>
+            <input type="text" id="name" placeholder="Enter Name"/>
+            <label for="">Email</label>
+            <input type="text" id="email" placeholder="Enter Email"/>
+            <label for="">Username</label>
+            <input type="text" placeholder="Enter Username" id="username"/>
+            <label for="">Password</label>
+            <input type="password" id="password" placeholder="Valid Password"/>
+            <label for="">Phone No.</label>
+            <input type="number" id="mobile" placeholder="Your Number"/>
+            <label>Description</label>
+            <input type="text" id="description" placeholder="Description You Like"/>
+
+            <input type="submit" id="submit" onclick="register(event)"/>
+        </form>
+    </div>
+</body>
+</html>
+
+<script>
+    async function register(e){
+        try{
+            e.preventDefault();
+            var register_data = {
+                name: document.querySelector("#name").value,
+                email: document.querySelector("#email").value,
+                password: document.querySelector("#password").value,
+                username: document.querySelector("#username").value,
+                mobile: document.querySelector("#mobile").value,
+                description: document.querySelector("#description").value,
+            };
+
+            register_data = JSON.stringify(register_data);
+            console.log('register_data:', register_data);
+        }
+        catch(error){
+            console.log('error:', error);
+        }
+
+        let register_api = `https://masai-api-mocker.herokuapp.com/auth/register`;
+
+        let res = await fetch(register_api, {
+            method: "POST",
+
+            body: register_data,
+
+            headers:{
+                "Content-Type": "application/json",
+            },
+        });
+
+        let data = await res.json();
+        console.log('data:', data);
+    }
+</script>

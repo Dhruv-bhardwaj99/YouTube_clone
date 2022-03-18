@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+    <title>Document</title>
+    <link rel="stylesheet" href="./yt_styles/myStyles.css">
+</head>
+<body>
+    <div id="cont"></div>
+</body>
+<script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+</html>
+
+<script type="module">
+    import navbar from "./yt_component/dataNav.js";
+    // console.log('navbar:', navbar);
+
+    var box = document.querySelector("#cont");
+    box.innerHTML = navbar();
+
+    let myInfo = JSON.parse(localStorage.getItem("your Details"));
+
+    console.log(myInfo.username, myInfo.token);
+    let myUsername = myInfo.username;
+    let myToken = myInfo.token;
+    getMyuser(myUsername, myToken);
+
+    async function getMyuser(myUsername, myToken){
+        try{
+            let api = `https://masai-api-mocker.herokuapp.com/user/${myUsername}`;
+
+            let response = await fetch(api, {
+                headers:{
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${myToken}`,
+                },
+            });
+            let info = await response.json();
+            appendInfo(info);
+            console.log('info:', info);
+        }
+        catch(error){
+            console.log('error:', error);
+        }
+    }
+    let dp = document.getElementById("authe");
+    function appendInfo(info){
+        let div = document.createElement("div");
+
+        let name = document.createElement("p");
+        name.innerHTML = info.name;
+
+        div.append(name);
+        dp.append(div);
+    }
+
+</script>
